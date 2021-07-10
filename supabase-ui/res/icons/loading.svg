@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="loading-one.svg"
+   id="svg30"
+   version="1.1"
+   style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+   viewBox="0 0 48 48"
+   preserveAspectRatio="xMidYMid meet"
+   height="48"
+   width="48">
+  <metadata
+     id="metadata36">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs34" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg30"
+     inkscape:window-maximized="0"
+     inkscape:window-y="86"
+     inkscape:window-x="202"
+     inkscape:cy="24"
+     inkscape:cx="24"
+     inkscape:zoom="5.2078431"
+     showgrid="false"
+     id="namedview32"
+     inkscape:window-height="480"
+     inkscape:window-width="906"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <g
+     id="g26"
+     stroke-linejoin="round"
+     stroke-linecap="round"
+     stroke-width="4"
+     stroke="white"
+     fill="none">
+    <path
+       id="path2"
+       d="M24 4v4" />
+    <path
+       id="path4"
+       d="M34 6.68l-2 3.463" />
+    <path
+       id="path6"
+       d="M41.32 14l-3.464 2" />
+    <path
+       id="path8"
+       d="M44 24h-4" />
+    <path
+       id="path10"
+       d="M41.32 34l-3.464-2" />
+    <path
+       id="path12"
+       d="M34 41.32l-2-3.464" />
+    <path
+       id="path14"
+       d="M24 44v-4" />
+    <path
+       id="path16"
+       d="M14 41.32l2-3.464" />
+    <path
+       id="path18"
+       d="M6.68 34l3.463-2" />
+    <path
+       id="path20"
+       d="M4 24h4" />
+    <path
+       id="path22"
+       d="M6.68 14l3.463 2" />
+    <path
+       id="path24"
+       d="M14 6.68l2 3.463" />
+  </g>
+</svg>

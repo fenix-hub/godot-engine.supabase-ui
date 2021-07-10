@@ -1,0 +1,829 @@
+[gd_scene load_steps=29 format=2]
+
+[ext_resource path="res://supabase-ui/data_input/input/Input.tscn" type="PackedScene" id=1]
+[ext_resource path="res://supabase-ui/res/icons/email.svg" type="Texture" id=2]
+[ext_resource path="res://supabase-ui/res/icons/key.svg" type="Texture" id=3]
+[ext_resource path="res://supabase-ui/data_input/checkbox/Checkbox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://supabase-ui/basic/button/link/Link.tscn" type="PackedScene" id=5]
+[ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://supabase-ui/basic/typography/SLabel.tscn" type="PackedScene" id=8]
+[ext_resource path="res://supabase-ui/components/auth/auth.gd" type="Script" id=9]
+[ext_resource path="res://supabase-ui/res/icons/lock.svg" type="Texture" id=10]
+[ext_resource path="res://supabase-ui/res/icons/inbox.svg" type="Texture" id=11]
+[ext_resource path="res://supabase-ui/basic/button/primary/primary_button.gd" type="Script" id=12]
+[ext_resource path="res://supabase-ui/data_input/input/input.gd" type="Script" id=13]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 20
+
+[sub_resource type="DynamicFont" id=6]
+size = 15
+font_data = ExtResource( 6 )
+
+[sub_resource type="Theme" id=19]
+default_font = SubResource( 6 )
+
+[sub_resource type="StyleBoxEmpty" id=20]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 15.0
+content_margin_bottom = 15.0
+
+[sub_resource type="DynamicFont" id=4]
+size = 15
+font_data = ExtResource( 7 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 14.0
+content_margin_right = 14.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 20
+shadow_color = Color( 1, 1, 1, 0 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=12]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="Theme" id=22]
+default_font = SubResource( 6 )
+
+[sub_resource type="StyleBoxEmpty" id=23]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 15.0
+content_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+resource_local_to_scene = true
+resource_name = "PrimaryButton"
+content_margin_left = 13.0
+content_margin_right = 13.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+bg_color = Color( 0.141176, 0.705882, 0.494118, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 20
+shadow_color = Color( 0, 0, 0, 0.0392157 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 1.5 )
+anti_aliasing = false
+
+[sub_resource type="DynamicFont" id=17]
+size = 15
+font_data = ExtResource( 7 )
+
+[sub_resource type="GDScript" id=18]
+script/source = "tool
+extends DefaultButton
+class_name PrimaryButton
+
+export var enable_loading : bool = false
+
+var loading_icon := load(\"res://supabase-ui/res/icons/loader.svg\")
+var loading : bool = false
+
+func load_anim():
+    enable_icon(true)
+    set_expand(true)
+    set_texture(loading_icon)
+    set_process_internal(true)
+    loading = true
+
+func stop_loading() -> void:
+    enable_icon(false)
+    set_texture(texture)
+    set_process_internal(false)
+    loading = false
+
+func _notification(what : int) -> void:
+    if what == NOTIFICATION_INTERNAL_PROCESS:
+        _internal_process(get_process_delta_time())
+
+func _internal_process(_delta : float) -> void:
+    $ButtonContainer/Icon.rect_rotation += _delta*240
+
+
+
+func _pressed():
+    if enable_loading:
+        if loading:
+            stop_loading()
+        else:
+            load_anim()
+
+func _load_defaults():
+    property_list[0][\"class_name\"] = \"PrimaryButton\"
+    property_list[0][\"name\"] = \"PrimaryButton\"
+
+    colors.text =  [Color.white, Color.white]
+    colors.text_hover =  [Color.white, Color.white]
+    colors.icon =  [Color.white, Color.white]
+    colors.button =  [Color(\"#24b47e\"), Color(\"#24b47e\")]
+    colors.button_hover =  [Color(\"#4bd2a0\"), Color(\"#198c61\")]
+    
+    text = \"Primary Button\"
+"
+
+[node name="Auth" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -150.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="VBoxContainer" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 1004.0
+margin_bottom = 430.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" parent="Container" instance=ExtResource( 8 )]
+margin_left = 492.0
+margin_right = 492.0
+margin_bottom = 19.0
+size_flags_horizontal = 6
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+text = ""
+level = 4
+font_size = 16
+text_color = null
+
+[node name="SignIn" type="VBoxContainer" parent="Container"]
+margin_top = 23.0
+margin_right = 984.0
+margin_bottom = 410.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="EmailAddress" type="PanelContainer" parent="Container/SignIn"]
+margin_right = 984.0
+margin_bottom = 94.0
+theme = SubResource( 19 )
+custom_styles/panel = SubResource( 20 )
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+icon_enabled = false
+texture = null
+expand = null
+size = Vector2( 32, 32 )
+text = ""
+placeholder = ""
+secret = false
+input_name = "Input Name"
+optional_name = "Optional Name"
+show_description = false
+description = "Description"
+font_size = 15
+
+[node name="Container" type="VBoxContainer" parent="Container/SignIn/EmailAddress"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 969.0
+margin_bottom = 79.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Top" type="HBoxContainer" parent="Container/SignIn/EmailAddress/Container"]
+margin_right = 954.0
+margin_bottom = 18.0
+
+[node name="Name" type="Label" parent="Container/SignIn/EmailAddress/Container/Top"]
+modulate = Color( 0.121569, 0.121569, 0.121569, 1 )
+margin_right = 80.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 4 )
+text = "Input Name"
+
+[node name="Optional" type="Label" parent="Container/SignIn/EmailAddress/Container/Top"]
+modulate = Color( 0.4, 0.4, 0.4, 1 )
+margin_left = 84.0
+margin_right = 954.0
+margin_bottom = 18.0
+size_flags_horizontal = 11
+text = "Optional Name"
+align = 2
+
+[node name="InputContainer" type="PanelContainer" parent="Container/SignIn/EmailAddress/Container"]
+margin_top = 28.0
+margin_right = 954.0
+margin_bottom = 64.0
+custom_styles/panel = SubResource( 5 )
+
+[node name="Box" type="HBoxContainer" parent="Container/SignIn/EmailAddress/Container/InputContainer"]
+modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+margin_left = 14.0
+margin_top = 9.0
+margin_right = 940.0
+margin_bottom = 27.0
+custom_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Container/SignIn/EmailAddress/Container/InputContainer/Box"]
+visible = false
+margin_right = 26.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 32, 32 )
+expand = true
+
+[node name="Text" type="LineEdit" parent="Container/SignIn/EmailAddress/Container/InputContainer/Box"]
+margin_right = 926.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 12 )
+custom_styles/focus = SubResource( 14 )
+custom_styles/normal = SubResource( 8 )
+custom_colors/selection_color = Color( 0.145098, 0.376471, 1, 1 )
+custom_colors/font_color_selected = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+
+[node name="Description" type="Label" parent="Container/SignIn/EmailAddress/Container"]
+visible = false
+modulate = Color( 0.4, 0.4, 0.4, 1 )
+margin_top = 313.0
+margin_right = 994.0
+margin_bottom = 331.0
+text = "Description"
+
+[node name="Tween" type="Tween" parent="Container/SignIn/EmailAddress"]
+
+[node name="Password" type="PanelContainer" parent="Container/SignIn"]
+margin_top = 104.0
+margin_right = 984.0
+margin_bottom = 198.0
+theme = SubResource( 22 )
+custom_styles/panel = SubResource( 23 )
+script = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+icon_enabled = false
+texture = null
+expand = null
+size = Vector2( 32, 32 )
+text = ""
+placeholder = ""
+secret = false
+input_name = "Input Name"
+optional_name = "Optional Name"
+show_description = false
+description = "Description"
+font_size = 15
+
+[node name="Container" type="VBoxContainer" parent="Container/SignIn/Password"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 969.0
+margin_bottom = 79.0
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Top" type="HBoxContainer" parent="Container/SignIn/Password/Container"]
+margin_right = 954.0
+margin_bottom = 18.0
+
+[node name="Name" type="Label" parent="Container/SignIn/Password/Container/Top"]
+modulate = Color( 0.121569, 0.121569, 0.121569, 1 )
+margin_right = 80.0
+margin_bottom = 18.0
+custom_fonts/font = SubResource( 4 )
+text = "Input Name"
+
+[node name="Optional" type="Label" parent="Container/SignIn/Password/Container/Top"]
+modulate = Color( 0.4, 0.4, 0.4, 1 )
+margin_left = 84.0
+margin_right = 954.0
+margin_bottom = 18.0
+size_flags_horizontal = 11
+text = "Optional Name"
+align = 2
+
+[node name="InputContainer" type="PanelContainer" parent="Container/SignIn/Password/Container"]
+margin_top = 28.0
+margin_right = 954.0
+margin_bottom = 64.0
+custom_styles/panel = SubResource( 5 )
+
+[node name="Box" type="HBoxContainer" parent="Container/SignIn/Password/Container/InputContainer"]
+modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+margin_left = 14.0
+margin_top = 9.0
+margin_right = 940.0
+margin_bottom = 27.0
+custom_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="Container/SignIn/Password/Container/InputContainer/Box"]
+visible = false
+margin_right = 26.0
+margin_bottom = 26.0
+rect_min_size = Vector2( 32, 32 )
+expand = true
+
+[node name="Text" type="LineEdit" parent="Container/SignIn/Password/Container/InputContainer/Box"]
+margin_right = 926.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 12 )
+custom_styles/focus = SubResource( 14 )
+custom_styles/normal = SubResource( 8 )
+custom_colors/selection_color = Color( 0.145098, 0.376471, 1, 1 )
+custom_colors/font_color_selected = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+
+[node name="Description" type="Label" parent="Container/SignIn/Password/Container"]
+visible = false
+modulate = Color( 0.4, 0.4, 0.4, 1 )
+margin_top = 313.0
+margin_right = 994.0
+margin_bottom = 331.0
+text = "Description"
+
+[node name="Tween" type="Tween" parent="Container/SignIn/Password"]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/SignIn"]
+margin_top = 208.0
+margin_right = 984.0
+margin_bottom = 236.0
+
+[node name="Checkbox" parent="Container/SignIn/HBoxContainer" instance=ExtResource( 4 )]
+margin_right = 131.0
+text = "Remember Me"
+
+[node name="ForgotPassword" parent="Container/SignIn/HBoxContainer" instance=ExtResource( 5 )]
+margin_left = 826.0
+margin_top = 5.0
+margin_right = 984.0
+margin_bottom = 23.0
+size_flags_horizontal = 10
+text = "Forgot your password?"
+
+[node name="HSeparator" type="HSeparator" parent="Container/SignIn"]
+margin_top = 246.0
+margin_right = 984.0
+margin_bottom = 256.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 10
+
+[node name="SignInBtn" type="PanelContainer" parent="Container/SignIn"]
+margin_top = 266.0
+margin_right = 984.0
+margin_bottom = 316.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = SubResource( 3 )
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+enable_loading = true
+icon_enabled = true
+texture = ExtResource( 10 )
+expand = true
+size = Vector2( 32, 32 )
+text = "Sign In"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Container/SignIn/SignInBtn"]
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 971.0
+margin_bottom = 41.0
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Container/SignIn/SignInBtn/ButtonContainer"]
+margin_left = 437.0
+margin_right = 469.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 16, 16 )
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 10 )
+expand = true
+
+[node name="Text" type="Label" parent="Container/SignIn/SignInBtn/ButtonContainer"]
+margin_left = 473.0
+margin_top = 7.0
+margin_right = 521.0
+margin_bottom = 25.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Sign In"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="Container/SignIn/SignInBtn"]
+
+[node name="HSeparator2" type="HSeparator" parent="Container/SignIn"]
+margin_top = 326.0
+margin_right = 984.0
+margin_bottom = 331.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 5
+
+[node name="MagicLink" parent="Container/SignIn" instance=ExtResource( 5 )]
+margin_top = 341.0
+margin_right = 984.0
+margin_bottom = 359.0
+focus_mode = 2
+size_flags_vertical = 1
+text = "Sign in with magic link"
+
+[node name="SignUp" parent="Container/SignIn" instance=ExtResource( 5 )]
+margin_top = 369.0
+margin_right = 984.0
+margin_bottom = 387.0
+focus_mode = 2
+size_flags_vertical = 1
+text = "Don't have an account? Sign up"
+
+[node name="ErrorLbl" parent="Container/SignIn" instance=ExtResource( 8 )]
+visible = false
+margin_top = 425.0
+margin_right = 984.0
+margin_bottom = 444.0
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+text = ""
+align = 1
+valign = 1
+level = 4
+font_size = 16
+text_color = null
+
+[node name="SignUp" type="VBoxContainer" parent="Container"]
+visible = false
+margin_top = 442.0
+margin_right = 984.0
+margin_bottom = 829.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="EmailAddress" parent="Container/SignUp" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 984.0
+margin_bottom = 108.0
+icon_enabled = true
+texture = ExtResource( 2 )
+input_name = "Email Address"
+optional_name = ""
+
+[node name="Password" parent="Container/SignUp" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 118.0
+margin_right = 984.0
+margin_bottom = 226.0
+icon_enabled = true
+texture = ExtResource( 3 )
+secret = true
+input_name = "Password"
+optional_name = ""
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/SignUp"]
+margin_top = 236.0
+margin_right = 984.0
+margin_bottom = 264.0
+
+[node name="Checkbox" parent="Container/SignUp/HBoxContainer" instance=ExtResource( 4 )]
+margin_right = 131.0
+text = "Remember Me"
+
+[node name="HSeparator" type="HSeparator" parent="Container/SignUp"]
+margin_top = 274.0
+margin_right = 984.0
+margin_bottom = 284.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 10
+
+[node name="SignUpBtn" type="PanelContainer" parent="Container/SignUp"]
+margin_top = 294.0
+margin_right = 984.0
+margin_bottom = 344.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = SubResource( 3 )
+script = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+icon_enabled = true
+texture = ExtResource( 10 )
+expand = true
+size = Vector2( 32, 32 )
+text = "Sign Up"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Container/SignUp/SignUpBtn"]
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 971.0
+margin_bottom = 41.0
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Container/SignUp/SignUpBtn/ButtonContainer"]
+margin_left = 434.0
+margin_right = 466.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 12, 12 )
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 10 )
+expand = true
+
+[node name="Text" type="Label" parent="Container/SignUp/SignUpBtn/ButtonContainer"]
+margin_left = 470.0
+margin_top = 7.0
+margin_right = 524.0
+margin_bottom = 25.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Sign Up"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="Container/SignUp/SignUpBtn"]
+
+[node name="HSeparator2" type="HSeparator" parent="Container/SignUp"]
+margin_top = 354.0
+margin_right = 984.0
+margin_bottom = 359.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 5
+
+[node name="SignIn" parent="Container/SignUp" instance=ExtResource( 5 )]
+margin_left = 376.0
+margin_top = 369.0
+margin_right = 607.0
+margin_bottom = 387.0
+focus_mode = 2
+size_flags_horizontal = 6
+text = "Do you have an account? Sign up"
+
+[node name="ErrorLbl" parent="Container/SignUp" instance=ExtResource( 8 )]
+visible = false
+margin_top = 425.0
+margin_right = 984.0
+margin_bottom = 444.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+text = ""
+align = 1
+valign = 1
+level = 4
+font_size = 16
+text_color = null
+
+[node name="ForgotPassword" type="VBoxContainer" parent="Container"]
+visible = false
+margin_top = 23.0
+margin_right = 984.0
+margin_bottom = 829.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EmailAddress" parent="Container/ForgotPassword" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 984.0
+margin_bottom = 108.0
+icon_enabled = true
+texture = ExtResource( 2 )
+placeholder = "Your email address"
+input_name = "Email Address"
+optional_name = ""
+
+[node name="SendInstructionsBtn" type="PanelContainer" parent="Container/ForgotPassword"]
+margin_top = 112.0
+margin_right = 984.0
+margin_bottom = 162.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = SubResource( 3 )
+script = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+icon_enabled = true
+texture = ExtResource( 11 )
+expand = true
+size = Vector2( 32, 32 )
+text = "Send reset password instructions"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Container/ForgotPassword/SendInstructionsBtn"]
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 971.0
+margin_bottom = 41.0
+mouse_filter = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Container/ForgotPassword/SendInstructionsBtn/ButtonContainer"]
+margin_left = 345.0
+margin_right = 377.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 12, 12 )
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 11 )
+expand = true
+
+[node name="Text" type="Label" parent="Container/ForgotPassword/SendInstructionsBtn/ButtonContainer"]
+margin_left = 381.0
+margin_top = 7.0
+margin_right = 612.0
+margin_bottom = 25.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Send reset password instructions"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="Container/ForgotPassword/SendInstructionsBtn"]
+
+[node name="HSeparator3" type="HSeparator" parent="Container/ForgotPassword"]
+margin_top = 166.0
+margin_right = 984.0
+margin_bottom = 171.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 5
+
+[node name="BackToSignIn" parent="Container/ForgotPassword" instance=ExtResource( 5 )]
+margin_top = 175.0
+margin_right = 125.0
+margin_bottom = 193.0
+focus_mode = 2
+size_flags_horizontal = 0
+text = "Go back to sign in"
+
+[node name="ErrorLbl" parent="Container/ForgotPassword" instance=ExtResource( 8 )]
+visible = false
+margin_top = 425.0
+margin_right = 984.0
+margin_bottom = 444.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+text = ""
+align = 1
+valign = 1
+level = 4
+font_size = 16
+text_color = null
+
+[node name="WithMagicLink" type="VBoxContainer" parent="Container"]
+visible = false
+margin_top = 442.0
+margin_right = 984.0
+margin_bottom = 635.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EmailAddress" parent="Container/WithMagicLink" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 984.0
+margin_bottom = 108.0
+icon_enabled = true
+texture = ExtResource( 2 )
+placeholder = "Your email address"
+input_name = "Email Address"
+optional_name = ""
+
+[node name="SendLinkBtn" type="PanelContainer" parent="Container/WithMagicLink"]
+margin_top = 112.0
+margin_right = 984.0
+margin_bottom = 162.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = SubResource( 3 )
+script = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+icon_enabled = true
+texture = ExtResource( 11 )
+expand = true
+size = Vector2( 32, 32 )
+text = "Send magic link"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="Container/WithMagicLink/SendLinkBtn"]
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 971.0
+margin_bottom = 41.0
+mouse_filter = 2
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Container/WithMagicLink/SendLinkBtn/ButtonContainer"]
+margin_left = 403.0
+margin_right = 435.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+rect_pivot_offset = Vector2( 12, 12 )
+mouse_filter = 2
+size_flags_vertical = 4
+texture = ExtResource( 11 )
+expand = true
+
+[node name="Text" type="Label" parent="Container/WithMagicLink/SendLinkBtn/ButtonContainer"]
+margin_left = 445.0
+margin_top = 7.0
+margin_right = 555.0
+margin_bottom = 25.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Send magic link"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="Container/WithMagicLink/SendLinkBtn"]
+
+[node name="HSeparator3" type="HSeparator" parent="Container/WithMagicLink"]
+margin_top = 166.0
+margin_right = 984.0
+margin_bottom = 171.0
+custom_styles/separator = SubResource( 2 )
+custom_constants/separation = 5
+
+[node name="SignWithPassword" parent="Container/WithMagicLink" instance=ExtResource( 5 )]
+margin_top = 175.0
+margin_right = 152.0
+margin_bottom = 193.0
+focus_mode = 2
+size_flags_horizontal = 0
+text = "Sign in with password"
+
+[node name="ErrorLbl" parent="Container/WithMagicLink" instance=ExtResource( 8 )]
+visible = false
+margin_top = 425.0
+margin_right = 984.0
+margin_bottom = 444.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+text = ""
+align = 1
+valign = 1
+level = 4
+font_size = 16
+text_color = null
+
+[connection signal="pressed" from="Container/SignIn/HBoxContainer/ForgotPassword" to="." method="_on_ForgotPassword_pressed"]
+[connection signal="pressed" from="Container/SignIn/SignInBtn" to="." method="_on_SignInBtn_pressed"]
+[connection signal="pressed" from="Container/SignIn/MagicLink" to="." method="_on_MagicLink_pressed"]
+[connection signal="pressed" from="Container/SignIn/SignUp" to="." method="_on_SignUp_pressed"]
+[connection signal="pressed" from="Container/SignUp/SignUpBtn" to="." method="_on_SignUpBtn_pressed"]
+[connection signal="pressed" from="Container/SignUp/SignIn" to="." method="_on_SignIn_pressed"]
+[connection signal="pressed" from="Container/ForgotPassword/SendInstructionsBtn" to="." method="_on_SendInstructionsBtn_pressed"]
+[connection signal="pressed" from="Container/ForgotPassword/BackToSignIn" to="." method="_on_BackToSignIn_pressed"]
+[connection signal="pressed" from="Container/WithMagicLink/SendLinkBtn" to="." method="_on_SendLinkBtn_pressed"]
+[connection signal="pressed" from="Container/WithMagicLink/SignWithPassword" to="." method="_on_SignWithPassword_pressed"]
