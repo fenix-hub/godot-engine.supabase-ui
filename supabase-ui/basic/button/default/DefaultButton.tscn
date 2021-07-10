@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://supabase-ui/basic/button/default/default_button.gd" type="Script" id=1]
+[ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://supabase-ui/basic/button/default/DefaultButton.tres" type="StyleBox" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 15
+font_data = ExtResource( 2 )
+
+[node name="DefaultButton" type="PanelContainer"]
+margin_right = 126.0
+margin_bottom = 36.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = ExtResource( 3 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+icon_enabled = false
+texture = null
+expand = false
+size = Vector2( 24, 24 )
+text = "Default Button"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 113.0
+margin_bottom = 27.0
+mouse_filter = 2
+
+[node name="Icon" type="TextureRect" parent="ButtonContainer"]
+visible = false
+modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 24, 24 )
+mouse_filter = 2
+size_flags_vertical = 4
+
+[node name="Text" type="Label" parent="ButtonContainer"]
+margin_right = 100.0
+margin_bottom = 18.0
+size_flags_horizontal = 7
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 0
+text = "Default Button"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="."]

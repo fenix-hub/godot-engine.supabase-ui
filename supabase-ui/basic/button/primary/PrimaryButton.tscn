@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://supabase-ui/basic/button/primary/primary_button.gd" type="Script" id=1]
+[ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+resource_local_to_scene = true
+resource_name = "PrimaryButton"
+content_margin_left = 13.0
+content_margin_right = 13.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+bg_color = Color( 0.141176, 0.705882, 0.494118, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 20
+shadow_color = Color( 0, 0, 0, 0.0392157 )
+shadow_size = 1
+shadow_offset = Vector2( 0, 1.5 )
+anti_aliasing = false
+
+[sub_resource type="DynamicFont" id=2]
+size = 15
+font_data = ExtResource( 2 )
+
+[node name="PrimaryButton" type="PanelContainer"]
+margin_right = 130.0
+margin_bottom = 36.0
+mouse_default_cursor_shape = 2
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+icon_enabled = false
+texture = null
+expand = false
+size = Vector2( 24, 24 )
+text = "Primary Button"
+font_size = 15
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+margin_left = 13.0
+margin_top = 9.0
+margin_right = 117.0
+margin_bottom = 27.0
+mouse_filter = 2
+custom_constants/separation = 10
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="ButtonContainer"]
+visible = false
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 24, 24 )
+rect_pivot_offset = Vector2( 12, 12 )
+mouse_filter = 2
+size_flags_vertical = 4
+expand = true
+
+[node name="Text" type="Label" parent="ButtonContainer"]
+margin_right = 104.0
+margin_bottom = 18.0
+size_flags_horizontal = 0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Primary Button"
+align = 1
+valign = 1
+
+[node name="Tween" type="Tween" parent="."]
