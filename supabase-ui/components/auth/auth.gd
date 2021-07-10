@@ -2,6 +2,10 @@ tool
 class_name SupabaseAuthPanel
 extends PanelContainer
 
+const colors : Dictionary = {
+    "panel" : [Color.white, Color("#2a2a2a")]
+   }
+
 signal signed_in(user)
 signal signed_up(user)
 signal magic_link_send()
@@ -149,4 +153,5 @@ func _on_SignWithPassword_pressed():
 
 func set_mode(_mode : int) :
     mode = _mode
+    get("custom_styles/panel").set("bg_color", colors.panel[mode])
     get_tree().call_group("supabase_components", "set_mode", mode)

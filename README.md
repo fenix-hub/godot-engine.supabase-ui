@@ -4,3 +4,5 @@
 UI Library for Supabase in Godot Engine
 
 This is a UI library for [godot-engine.supabase](https://github.com/fenix-hub/godot-engine.supabase)
+
+![demo](imgs/demo.gif)
