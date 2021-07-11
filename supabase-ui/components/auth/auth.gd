@@ -17,10 +17,10 @@ onready var sign_up_box : VBoxContainer = $Container/SignUp
 onready var forgot_password_box : VBoxContainer = $Container/ForgotPassword
 onready var with_magic_link_box : VBoxContainer = $Container/WithMagicLink
 
-onready var sign_in_error_lbl : SLabel = sign_in_box.get_node("ErrorLbl")
-onready var sign_up_error_lbl : SLabel = sign_up_box.get_node("ErrorLbl")
-onready var forgot_password_error_lbl : SLabel = forgot_password_box.get_node("ErrorLbl")
-onready var magic_link_error_lbl : SLabel = with_magic_link_box.get_node("ErrorLbl")
+onready var sign_in_error_lbl : SErrorLabel = sign_in_box.get_node("ErrorLbl")
+onready var sign_up_error_lbl : SErrorLabel = sign_up_box.get_node("ErrorLbl")
+onready var forgot_password_error_lbl : SErrorLabel = forgot_password_box.get_node("ErrorLbl")
+onready var magic_link_error_lbl : SErrorLabel = with_magic_link_box.get_node("ErrorLbl")
 
 export var app_name : String = "" setget set_app_name
 export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
@@ -40,29 +40,31 @@ func set_app_name(_name : String) -> void:
 
 # =========== SIGN IN ==================
 func _on_SignInBtn_pressed():
+    sign_in_error_lbl.hide()
+    _force_resize()
     var user_mail : String = $Container/SignIn/EmailAddress.get_text()
     var user_pwd : String = $Container/SignIn/Password.get_text()
     if user_mail == "" or user_pwd == "":
         show_sign_in_error("You must provide either an email/password combination or a third-party provider.")
         return
-    sign_in_error_lbl.hide()
     var sign_in : AuthTask = yield(Supabase.auth.sign_in(user_mail, user_pwd), "completed")
     if sign_in.error:
         show_sign_in_error(str(sign_in.error))
         return
     emit_signal("signed_in", sign_in.user)
-    $Container/SignIn/SignInBtn.stop_loading()
+    sign_in_box.get_node("SignInBtn").stop_loading()
 
 func show_sign_in_error(message : String) :
     sign_in_error_lbl.set_text(message)
     sign_in_error_lbl.show()
     emit_signal("error", message)
-    $Container/SignIn/SignInBtn.stop_loading()
+    sign_in_box.get_node("SignInBtn").stop_loading()
 
 
 # =========== SIGN UP ==================
 func _on_SignUpBtn_pressed():
     sign_up_error_lbl.hide()
+    _force_resize()
     var user_mail : String = $Container/SignUp/EmailAddress.get_text()
     var user_pwd : String = $Container/SignUp/Password.get_text()
     if user_mail == "" or user_pwd == "":
@@ -73,17 +75,20 @@ func _on_SignUpBtn_pressed():
         show_sign_up_error(str(sign_up.error))
         return
     emit_signal("signed_up", sign_up.user)
+    sign_up_box.get_node("SignUpBtn").stop_loading()
 
 
 func show_sign_up_error(message : String) :
     sign_up_error_lbl.set_text(message)
     sign_up_error_lbl.show()
     emit_signal("error", message)
+    sign_up_box.get_node("SignUpBtn").stop_loading()
 
 
 # =========== FORGOT PASSWORD ==================
 func _on_SendInstructionsBtn_pressed():
     forgot_password_error_lbl.hide()
+    _force_resize()
     var user_mail : String = $Container/ForgotPassword/EmailAddress.get_text()
     if user_mail == "":
         show_forgot_password_error("You must provide a mail to send the link to.")
@@ -93,16 +98,19 @@ func _on_SendInstructionsBtn_pressed():
         show_forgot_password_error(str(forgot_pwd.error))
         return
     emit_signal("instructions_send")
+    forgot_password_box.get_node("SendInstructionsBtn").stop_loading()
 
 
 func show_forgot_password_error(message : String) :
     forgot_password_error_lbl.set_text(message)
     forgot_password_error_lbl.show()
     emit_signal("error", message)
+    forgot_password_box.get_node("SendInstructionsBtn").stop_loading()
 
 # =========== MAGIC LINK ==================
 func _on_SendLinkBtn_pressed():
     magic_link_error_lbl.hide()
+    _force_resize()
     var user_mail : String = $Container/WithMagicLink/EmailAddress.get_text()
     if user_mail == "":
         show_magic_link_error("You must provide a mail to send the link to.")
@@ -112,12 +120,13 @@ func _on_SendLinkBtn_pressed():
         show_magic_link_error(str(magic_link.error))
         return
     emit_signal("magic_link_send")
-
+    with_magic_link_box.get_node("SendLinkBtn").stop_loading()
 
 func show_magic_link_error(message : String) :
     magic_link_error_lbl.set_text(message)
     magic_link_error_lbl.show()
     emit_signal("error", message)
+    with_magic_link_box.get_node("SendLinkBtn").stop_loading()
 
 
 # ================================================
@@ -125,33 +134,43 @@ func show_magic_link_error(message : String) :
 func _on_ForgotPassword_pressed():
     sign_in_box.hide()
     forgot_password_box.show()
+    _force_resize()
 
 
 func _on_MagicLink_pressed():
     sign_in_box.hide()
     with_magic_link_box.show()
+    _force_resize()
 
 
 func _on_SignUp_pressed():
     sign_in_box.hide()
     sign_up_box.show()
+    _force_resize()
 
 
 func _on_SignIn_pressed():
     sign_in_box.show()
     sign_up_box.hide()
+    _force_resize()
 
 
 func _on_BackToSignIn_pressed():
     sign_in_box.show()
     forgot_password_box.hide()
+    _force_resize()
 
 
 func _on_SignWithPassword_pressed():
     sign_in_box.show()
     with_magic_link_box.hide()
+    _force_resize()
 
 func set_mode(_mode : int) :
     mode = _mode
     get("custom_styles/panel").set("bg_color", colors.panel[mode])
     get_tree().call_group("supabase_components", "set_mode", mode)
+
+func _force_resize() :
+    hide()
+    show()

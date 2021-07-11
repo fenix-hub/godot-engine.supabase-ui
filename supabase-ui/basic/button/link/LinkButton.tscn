@@ -22,12 +22,13 @@ texture = null
 expand = false
 size = Vector2( 32, 32 )
 text = "Link Button"
+font_size = 15
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
 modulate = Color( 0.141176, 0.705882, 0.494118, 1 )
 margin_left = 13.0
 margin_top = 9.0
-margin_right = 113.0
+margin_right = 93.0
 margin_bottom = 27.0
 mouse_filter = 2
 
@@ -41,7 +42,7 @@ mouse_filter = 2
 size_flags_vertical = 4
 
 [node name="Text" type="Label" parent="ButtonContainer"]
-margin_right = 100.0
+margin_right = 80.0
 margin_bottom = 18.0
 size_flags_horizontal = 7
 custom_fonts/font = SubResource( 1 )
