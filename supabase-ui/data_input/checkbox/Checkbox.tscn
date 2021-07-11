@@ -1,0 +1,66 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://supabase-ui/data_input/checkbox/checkbox.gd" type="Script" id=1]
+[ext_resource path="res://supabase-ui/res/icons/checkbox.png" type="Texture" id=2]
+[ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://supabase-ui/res/icons/un_checkbox.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=19]
+size = 15
+font_data = ExtResource( 3 )
+
+[sub_resource type="Theme" id=20]
+resource_local_to_scene = true
+default_font = SubResource( 19 )
+
+[sub_resource type="StyleBoxEmpty" id=21]
+content_margin_left = 35.0
+
+[node name="Checkbox" type="VBoxContainer"]
+margin_right = 62.0
+margin_bottom = 28.0
+theme = SubResource( 20 )
+custom_constants/separation = 10
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text = "Text"
+show_description = false
+description = "Description"
+font_size = 15
+
+[node name="CheckboxContainer" type="HBoxContainer" parent="."]
+margin_right = 62.0
+margin_bottom = 28.0
+mouse_filter = 2
+
+[node name="CheckBox" type="CheckBox" parent="CheckboxContainer"]
+modulate = Color( 0.576471, 0.215686, 0.215686, 0.470588 )
+margin_right = 28.0
+margin_bottom = 28.0
+mouse_filter = 1
+custom_icons/checked = ExtResource( 2 )
+custom_icons/unchecked = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="Label" parent="CheckboxContainer"]
+modulate = Color( 0.121569, 0.121569, 0.121569, 1 )
+margin_left = 32.0
+margin_top = 5.0
+margin_right = 62.0
+margin_bottom = 23.0
+text = "Text"
+
+[node name="Description" type="Label" parent="."]
+visible = false
+modulate = Color( 0.4, 0.4, 0.4, 1 )
+margin_top = 38.0
+margin_right = 114.0
+margin_bottom = 56.0
+custom_styles/normal = SubResource( 21 )
+text = "Description"
+
+[node name="Tween" type="Tween" parent="."]
