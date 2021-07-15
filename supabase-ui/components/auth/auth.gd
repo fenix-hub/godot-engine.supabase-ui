@@ -33,6 +33,10 @@ func _load_boxes():
 
 func _ready():
     _load_boxes()
+    Supabase.auth.connect("error", self, "_on_auth_error")
+
+func _on_auth_error(error):
+    printerr(error)
 
 func set_app_name(_name : String) -> void:
     app_name = _name
