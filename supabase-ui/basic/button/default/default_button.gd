@@ -14,6 +14,7 @@ var colors : Dictionary = {
     "icon" : [Color("#414141"), Color.white ],
     "button" : [Color.white, Color("#2a2a2a")],
     "button_hover" : [Color.white, Color("#181818")],
+    "button_disabled" : [Color.gray, Color.gray],
     "border" : [Color("#cccccc"), Color("#2a2a2a")],
     "border_hover" : [Color("#cccccc"), Color("#2a2a2a")],
     "shadow_size" : [1.5, 0]
@@ -21,11 +22,13 @@ var colors : Dictionary = {
 
 var font_size : int = 15 setget set_font_size
 
-var icon_enabled : bool = false setget enable_icon
-var texture : Texture = null setget set_texture
-var expand : bool = false setget set_expand
-var size : Vector2 = Vector2(32, 32) setget _set_size
+var icon_enabled : bool = false     setget enable_icon
+var text_enabled : bool = true      setget enable_text
+var texture : Texture = null        setget set_texture
+var expand : bool = false           setget set_expand
+var size : Vector2 = Vector2(24, 24) setget _set_size
 var text : String = "Default Button" setget set_text
+var disabled : bool = false         setget set_disabled
 
 var pressing : bool = false
 
@@ -36,6 +39,11 @@ var property_list : Array = [
         "usage": PROPERTY_USAGE_CATEGORY,
         "name": "DefaultButton",
         "type": TYPE_STRING
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "disabled",
+        "type": TYPE_BOOL          
     },
     {
         "usage": PROPERTY_USAGE_GROUP,
@@ -71,6 +79,11 @@ var property_list : Array = [
     },
     {
         "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "text_enabled",
+        "type": TYPE_BOOL          
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
         "name": "text",
         "type": TYPE_STRING
     },
@@ -79,7 +92,7 @@ var property_list : Array = [
         "name": "font_size",
         "type": TYPE_INT
     }
-]
+    ]
 
 
 func _get_property_list():
@@ -87,6 +100,9 @@ func _get_property_list():
 
 func _set(property, value):
     match property:
+        "disabled":
+            set_disabled(value)
+            return true
         "texture": 
             set_texture(value)
             return true
@@ -98,6 +114,9 @@ func _set(property, value):
             return true
         "icon_enabled":
             enable_icon(value)
+            return true
+        "text_enabled":
+            enable_text(value)
             return true
         "text": 
             set_text(value)
@@ -124,6 +143,13 @@ func _ready():
     _set_size(size)
     
     add_to_group("supabase_components")
+
+func set_disabled(_disabled : bool) -> void:
+    disabled = _disabled
+    if disabled:
+        set_button_color(colors.button_disabled[mode])
+    else:
+        set_button_color(colors.button[mode])
 
 func set_texture(_texture : Texture) -> void:
     texture = _texture
@@ -162,12 +188,18 @@ func enable_icon(enabled : bool) -> void:
     if has_node("ButtonContainer/Icon"):
         get_node("ButtonContainer/Icon").show() if enabled else hide_icon()
 
+func enable_text(enabled : bool) -> void:
+    text_enabled = enabled
+    if has_node("ButtonContainer/Text"):
+        get_node("ButtonContainer/Text").visible = enabled
+
 func set_mode(_mode : int) -> void:
     mode = _mode
     set_text_color(colors.text[mode])
     set_button_color(colors.button[mode])
     set_button_border(colors.border[mode])
     set_button_shadow(colors.shadow_size[mode])
+    set_disabled(disabled)
 
 func get_button_color() -> Color:
     return get("custom_styles/panel").get("bg_color")
@@ -190,6 +222,7 @@ func set_font_size(_size : int) -> void:
         get_node("ButtonContainer/Text").get("custom_fonts/font").set("size", _size)
 
 func _gui_input(event : InputEvent):
+    if disabled: return
     if event is InputEventMouseButton:
         if event.pressed:
             pressing = true
@@ -201,7 +234,7 @@ func _gui_input(event : InputEvent):
             emit_signal("released")
 
 func _pressed() -> void:
-    pass
+    $Tween.stop_all()
 
 func _released() -> void:
     pass 
@@ -233,8 +266,10 @@ func hover_before():
 
 
 func _on_mouse_entered():
+    if disabled : return
     emit_signal("hover")
     hover_after()    
 
 func _on_mouse_exited():
+    if disabled : return
     hover_before()

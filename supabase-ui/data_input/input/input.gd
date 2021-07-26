@@ -6,6 +6,9 @@ signal pressed()
 signal released()
 signal hover()
 
+signal text_changed(text)
+signal text_entered(text)
+
 export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
 
 var colors : Dictionary = {
@@ -32,7 +35,8 @@ var size : Vector2 = Vector2(24, 24)            setget _set_size
 var text : String = ""                          setget set_text
 var placeholder : String = ""                   setget set_placeholder
 var input_name : String = "Input Name"          setget set_input_name
-var optional_name : String = ""    setget set_optional_name
+var show_name : bool = true                     setget set_show_name
+var optional_name : String = ""                 setget set_optional_name
 var description : String = "Description"        setget set_description
 var show_description : bool = false             setget set_show_description
 
@@ -96,6 +100,11 @@ var property_list : Array = [
     },
     {
         "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "show_name",
+        "type": TYPE_BOOL
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
         "name": "input_name",
         "type": TYPE_STRING
     },
@@ -144,6 +153,8 @@ func _ready():
     _set_size(size)
 
     add_to_group("supabase_components")
+
+
 
 func set_texture(_texture : Texture) -> void:
     texture = _texture
@@ -253,6 +264,10 @@ func set_show_description(_value : bool):
     show_description = _value
     if has_node("Container/Description"): get_node("Container/Description").visible = _value
 
+func set_show_name(_value : bool) :
+    show_name = _value
+    if has_node("Container/Top"): get_node("Container/Top").visible = show_name
+
 func _on_focus_entered():
     $Tween.interpolate_method(self, "set_shadow_size", get_shadow_size(), colors.shadow_size_hover[mode], 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT)
     $Tween.interpolate_method(self, "set_shadow_color", get_shadow_color(), colors.shadow_hover[mode], 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT)
@@ -269,3 +284,20 @@ func _on_focus_exited():
 func set_secret(_secret : bool) -> void:
     secret = _secret
     if has_node("Container/InputContainer/Box/Text"): get_node("Container/InputContainer/Box/Text").secret = _secret
+
+
+func _on_Text_text_changed(new_text):
+    emit_signal("text_changed", new_text)
+
+
+func _on_Text_text_entered(new_text):
+    emit_signal("text_entered", new_text)
+
+func clear():
+    $Container/InputContainer/Box/Text.clear()
+
+
+
+func _on_Text_gui_input(event):
+    if event.is_pressed():
+        emit_signal("pressed")

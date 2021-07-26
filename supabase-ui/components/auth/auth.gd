@@ -25,15 +25,50 @@ onready var magic_link_error_lbl : SErrorLabel = with_magic_link_box.get_node("E
 export var app_name : String = "" setget set_app_name
 export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
 
+var remember_me : bool = false
+
 func _load_boxes():
     sign_in_box.show()
     sign_up_box.hide()
     forgot_password_box.hide()
     with_magic_link_box.hide()
 
+func load_user() -> void:
+    var file : File = File.new()
+    var err := file.open_encrypted_with_pass("user://user.data", File.READ, OS.get_unique_id())
+    if err != OK:
+        remember_me = false
+    else:
+        var content : Dictionary = parse_json(file.get_as_text())
+        remember_me = content.get("remember_me", false)
+        $Container/SignIn/HBoxContainer/Checkbox.set_toggled(remember_me)
+        $Container/SignIn/EmailAddress.set_text(content.get("email", ""))
+        $Container/SignIn/Password.set_text(content.get("pwd", ""))
+    file.close()
+
+func save_user() -> void:
+    if not remember_me:
+        return
+    var file : File = File.new()
+    var err := file.open_encrypted_with_pass("user://user.data", File.WRITE, OS.get_unique_id())
+    if err != OK:
+        remember_me = false
+    else:
+        var content : Dictionary = {
+            remember_me = remember_me,
+            email = $Container/SignIn/EmailAddress.get_text(),
+            pwd = $Container/SignIn/Password.get_text()
+           }
+        file.store_string(to_json(content))
+    file.close()    
+
 func _ready():
+    add_to_group("supabase_components")
     _load_boxes()
+    load_user()
+    yield(Supabase, "ready")
     Supabase.auth.connect("error", self, "_on_auth_error")
+    
 
 func _on_auth_error(error):
     printerr(error)
@@ -55,6 +90,7 @@ func _on_SignInBtn_pressed():
     if sign_in.error:
         show_sign_in_error(str(sign_in.error))
         return
+    save_user()
     emit_signal("signed_in", sign_in.user)
     sign_in_box.get_node("SignInBtn").stop_loading()
 
@@ -78,6 +114,7 @@ func _on_SignUpBtn_pressed():
     if sign_up.error:
         show_sign_up_error(str(sign_up.error))
         return
+    save_user()
     emit_signal("signed_up", sign_up.user)
     sign_up_box.get_node("SignUpBtn").stop_loading()
 
@@ -173,8 +210,10 @@ func _on_SignWithPassword_pressed():
 func set_mode(_mode : int) :
     mode = _mode
     get("custom_styles/panel").set("bg_color", colors.panel[mode])
-    get_tree().call_group("supabase_components", "set_mode", mode)
 
 func _force_resize() :
     hide()
     show()
+
+func _on_Checkbox_toggled(toggle):
+    remember_me = toggle

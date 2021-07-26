@@ -5,21 +5,21 @@
 [ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://supabase-ui/res/icons/un_checkbox.png" type="Texture" id=4]
 
-[sub_resource type="DynamicFont" id=19]
+[sub_resource type="DynamicFont" id=1]
 size = 15
 font_data = ExtResource( 3 )
 
-[sub_resource type="Theme" id=20]
+[sub_resource type="Theme" id=2]
 resource_local_to_scene = true
-default_font = SubResource( 19 )
+default_font = SubResource( 1 )
 
-[sub_resource type="StyleBoxEmpty" id=21]
+[sub_resource type="StyleBoxEmpty" id=3]
 content_margin_left = 35.0
 
 [node name="Checkbox" type="VBoxContainer"]
 margin_right = 62.0
 margin_bottom = 28.0
-theme = SubResource( 20 )
+theme = SubResource( 2 )
 custom_constants/separation = 10
 script = ExtResource( 1 )
 __meta__ = {
@@ -36,7 +36,7 @@ margin_bottom = 28.0
 mouse_filter = 2
 
 [node name="CheckBox" type="CheckBox" parent="CheckboxContainer"]
-modulate = Color( 0.576471, 0.215686, 0.215686, 0.470588 )
+modulate = Color( 1, 0.98, 0.94, 1 )
 margin_right = 28.0
 margin_bottom = 28.0
 mouse_filter = 1
@@ -60,7 +60,9 @@ modulate = Color( 0.4, 0.4, 0.4, 1 )
 margin_top = 38.0
 margin_right = 114.0
 margin_bottom = 56.0
-custom_styles/normal = SubResource( 21 )
+custom_styles/normal = SubResource( 3 )
 text = "Description"
 
 [node name="Tween" type="Tween" parent="."]
+
+[connection signal="toggled" from="CheckboxContainer/CheckBox" to="." method="_on_CheckBox_toggled"]

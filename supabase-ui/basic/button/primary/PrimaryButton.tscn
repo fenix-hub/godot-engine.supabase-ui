@@ -29,15 +29,19 @@ font_data = ExtResource( 2 )
 margin_right = 130.0
 margin_bottom = 36.0
 mouse_default_cursor_shape = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
+disabled = false
 icon_enabled = false
 texture = null
 expand = false
 size = Vector2( 24, 24 )
+text_enabled = true
 text = "Primary Button"
 font_size = 15
 
@@ -52,13 +56,12 @@ alignment = 1
 
 [node name="Icon" type="TextureRect" parent="ButtonContainer"]
 visible = false
-margin_right = 32.0
-margin_bottom = 32.0
+margin_right = 24.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 24, 24 )
 rect_pivot_offset = Vector2( 12, 12 )
 mouse_filter = 2
 size_flags_vertical = 4
-expand = true
 
 [node name="Text" type="Label" parent="ButtonContainer"]
 margin_right = 104.0

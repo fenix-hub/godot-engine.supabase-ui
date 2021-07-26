@@ -5,7 +5,7 @@
 [ext_resource path="res://supabase-ui/basic/button/text/TextButton.tres" type="StyleBox" id=3]
 
 [sub_resource type="DynamicFont" id=1]
-size = 15
+size = 17
 font_data = ExtResource( 2 )
 
 [node name="TextButton" type="PanelContainer"]
@@ -17,32 +17,34 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
+disabled = false
 icon_enabled = false
 texture = null
 expand = false
-size = Vector2( 32, 32 )
+size = Vector2( 24, 24 )
+text_enabled = true
 text = "Text Button"
+font_size = 15
 
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
 modulate = Color( 0.4, 0.4, 0.4, 1 )
-margin_left = 13.0
-margin_top = 9.0
-margin_right = 113.0
-margin_bottom = 27.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 96.0
+margin_bottom = 26.0
 mouse_filter = 2
 
 [node name="Icon" type="TextureRect" parent="ButtonContainer"]
 visible = false
-modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
 margin_right = 32.0
 margin_bottom = 32.0
-rect_min_size = Vector2( 32, 32 )
+rect_min_size = Vector2( 24, 24 )
 mouse_filter = 2
 size_flags_vertical = 4
 
 [node name="Text" type="Label" parent="ButtonContainer"]
-margin_right = 100.0
-margin_bottom = 18.0
+margin_right = 91.0
+margin_bottom = 21.0
 size_flags_horizontal = 7
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
