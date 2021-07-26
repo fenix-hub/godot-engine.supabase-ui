@@ -4,13 +4,13 @@
 [ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Medium.ttf" type="DynamicFontData" id=3]
 
-[sub_resource type="DynamicFont" id=20]
+[sub_resource type="DynamicFont" id=1]
 size = 15
 font_data = ExtResource( 2 )
 
 [sub_resource type="Theme" id=2]
 resource_local_to_scene = true
-default_font = SubResource( 20 )
+default_font = SubResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=3]
 resource_local_to_scene = true
@@ -23,7 +23,7 @@ content_margin_bottom = 15.0
 size = 15
 font_data = ExtResource( 3 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=5]
 resource_local_to_scene = true
 content_margin_left = 14.0
 content_margin_right = 14.0
@@ -64,6 +64,7 @@ size = Vector2( 24, 24 )
 text = ""
 placeholder = ""
 secret = false
+show_name = true
 input_name = "Input Name"
 optional_name = ""
 show_description = false
@@ -102,7 +103,7 @@ align = 2
 margin_top = 281.0
 margin_right = 994.0
 margin_bottom = 317.0
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="Box" type="HBoxContainer" parent="Container/InputContainer"]
 modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
@@ -139,3 +140,7 @@ margin_bottom = 331.0
 text = "Description"
 
 [node name="Tween" type="Tween" parent="."]
+
+[connection signal="gui_input" from="Container/InputContainer/Box/Text" to="." method="_on_Text_gui_input"]
+[connection signal="text_changed" from="Container/InputContainer/Box/Text" to="." method="_on_Text_text_changed"]
+[connection signal="text_entered" from="Container/InputContainer/Box/Text" to="." method="_on_Text_text_entered"]

@@ -4,6 +4,7 @@ class_name SCheckBox
 
 signal pressed()
 signal released()
+signal toggled(toggle)
 signal hover()
 
 export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
@@ -11,7 +12,7 @@ export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
 var colors : Dictionary = {
     "text" : [Color("#1F1F1F"), Color.white],
     "description" : [Color("#666666"), Color("#BBBBBB")],
-    "border" : [Color("#78933737"), Color("#c94646")],
+    "border" : [Color.floralwhite, Color.floralwhite],
     "border_hover" : [Color.white, Color.white]
    }
 
@@ -141,3 +142,8 @@ func _on_focus_exited():
     $Tween.interpolate_method(self, "set_border", get_border(), colors.border[mode], 0.2, Tween.TRANS_LINEAR, Tween.EASE_OUT)
     $Tween.start()    
 
+func set_toggled(toggled : bool) -> void:
+    $CheckboxContainer/CheckBox.pressed = toggled
+
+func _on_CheckBox_toggled(button_pressed):
+    emit_signal("toggled", button_pressed)

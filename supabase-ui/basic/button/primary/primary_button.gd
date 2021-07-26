@@ -5,26 +5,26 @@ class_name PrimaryButton
 export var enable_loading : bool = false
 
 onready var loading_texture := load("res://supabase-ui/res/icons/loader.svg")
-var current_texture
+var current_texture : Texture = null
 var loading : bool = false
 
 
-func load_anim():
-    current_texture = texture
-    enable_icon(true)
-    if not current_texture:
-        set_expand(true)
-    set_texture(loading_texture)
-    set_process_internal(true)
+func start_loading():
     loading = true
+    current_texture = texture
+    set_expand(true)
+    enable_icon(true)
+    set_texture(loading_texture)
+    $ButtonContainer/Icon.rect_pivot_offset = $ButtonContainer/Icon.rect_size/2
+    set_process_internal(true)
 
 func stop_loading() -> void:
+    loading = false
     if not current_texture:
         enable_icon(false)
     set_texture(current_texture)
     set_process_internal(false)
     $ButtonContainer/Icon.rect_rotation = 0
-    loading = false
 
 func _notification(what : int) -> void:
     if what == NOTIFICATION_INTERNAL_PROCESS:
@@ -33,14 +33,13 @@ func _notification(what : int) -> void:
 func _internal_process(_delta : float) -> void:
     $ButtonContainer/Icon.rect_rotation += _delta*240
 
-
-
 func _pressed():
+    ._pressed()
     if enable_loading:
         if loading:
             stop_loading()
         else:
-            load_anim()
+            start_loading()
 
 func _load_defaults():
     property_list[0]["class_name"] = "PrimaryButton"

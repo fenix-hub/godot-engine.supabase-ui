@@ -42,7 +42,9 @@ var property_list : Array = [
 func _get_property_list():
     return property_list
 
-
+func _init():
+    set_level(4)
+    set_text("")
 
 func _load_defaults():
     pass
@@ -50,9 +52,6 @@ func _load_defaults():
 func _ready():
     _load_defaults()
     set_mode(mode)
-    set_text("")
-    set_level(4)
-
     add_to_group("supabase_components")
 
 func set_text_color(_color : Color) -> void:
