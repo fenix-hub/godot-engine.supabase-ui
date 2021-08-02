@@ -21,7 +21,7 @@ var font_size : int = 15                        setget set_font_size
 var text : String = ""                          setget set_text
 var description : String = "Description"        setget set_description
 var show_description : bool = false             setget set_show_description
-
+var pressed : bool = false                      setget set_pressed
 var pressing : bool = false
 
 var property_list : Array = [
@@ -41,6 +41,11 @@ var property_list : Array = [
         "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
         "name": "text",
         "type": TYPE_STRING
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "pressed",
+        "type": TYPE_BOOL
     },
     {
         "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
@@ -77,13 +82,18 @@ func _ready():
     _load_defaults()
     set_mode(mode)
     set_text(text)
-    
+    set_pressed(pressed)
     add_to_group("supabase_components")
 
 func set_text(_text : String) -> void:
     text = _text
     if has_node("CheckboxContainer/Text"):
         get_node("CheckboxContainer/Text").set_text(_text)
+
+func set_pressed(_pressed : bool) -> void:
+    pressed = _pressed
+    if has_node("CheckboxContainer/CheckBox"):
+        get_node("CheckboxContainer/CheckBox").pressed = pressed
 
 func get_text() -> String:
     return $CheckboxContainer/Text.get_text()

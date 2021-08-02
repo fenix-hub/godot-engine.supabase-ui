@@ -1,6 +1,6 @@
 tool
-class_name SPanel
-extends PanelContainer
+class_name SPopup
+extends PopupPanel
 
 signal pressed()
 
