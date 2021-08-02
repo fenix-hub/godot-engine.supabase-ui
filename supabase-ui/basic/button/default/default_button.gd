@@ -224,14 +224,15 @@ func set_font_size(_size : int) -> void:
 func _gui_input(event : InputEvent):
     if disabled: return
     if event is InputEventMouseButton:
-        if event.pressed:
-            pressing = true
-            _pressed()
-            emit_signal("pressed")
-        else:
-            pressing = false
-            _released()
-            emit_signal("released")
+        if event.get_button_index() == 1:
+            if event.pressed:
+                pressing = true
+                _pressed()
+                emit_signal("pressed")
+            else:
+                pressing = false
+                _released()
+                emit_signal("released")
 
 func _pressed() -> void:
     $Tween.stop_all()

@@ -23,5 +23,6 @@ func _force_resize() :
 
 
 func _on_Panel_gui_input(event):
-    if event.is_pressed():
-        emit_signal("pressed")
+    if event is InputEventMouseButton:
+        if event.get_button_index() == 1 and event.is_pressed():
+            emit_signal("pressed")

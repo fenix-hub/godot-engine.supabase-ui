@@ -28,12 +28,14 @@ export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
 var remember_me : bool = false
 
 func _load_boxes():
+    
     sign_in_box.show()
     sign_up_box.hide()
     forgot_password_box.hide()
     with_magic_link_box.hide()
 
 func load_user() -> void:
+    if Engine.editor_hint: return
     var file : File = File.new()
     var err := file.open_encrypted_with_pass("user://user.data", File.READ, OS.get_unique_id())
     if err != OK:
@@ -47,8 +49,7 @@ func load_user() -> void:
     file.close()
 
 func save_user() -> void:
-    if not remember_me:
-        return
+    if not remember_me: return
     var file : File = File.new()
     var err := file.open_encrypted_with_pass("user://user.data", File.WRITE, OS.get_unique_id())
     if err != OK:
@@ -64,7 +65,7 @@ func save_user() -> void:
 
 func _ready():
     add_to_group("supabase_components")
-    _load_boxes()
+    _load_boxes()    
     load_user()
     yield(Supabase, "ready")
     Supabase.auth.connect("error", self, "_on_auth_error")

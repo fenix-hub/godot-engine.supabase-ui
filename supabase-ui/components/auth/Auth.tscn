@@ -249,6 +249,7 @@ margin_right = 146.0
 margin_bottom = 31.0
 size_flags_horizontal = 6
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
 level = 2
 font_size = 25
 
@@ -274,7 +275,7 @@ icon_enabled = true
 texture = ExtResource( 2 )
 expand = null
 size = Vector2( 24, 24 )
-text = "user+supaadmin@user.mail"
+text = ""
 placeholder = ""
 secret = false
 show_name = true
@@ -343,7 +344,6 @@ custom_styles/normal = SubResource( 10 )
 custom_colors/selection_color = Color( 0.145098, 0.376471, 1, 1 )
 custom_colors/font_color_selected = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "user+supaadmin@user.mail"
 
 [node name="Description" type="Label" parent="Container/SignIn/EmailAddress/Container"]
 visible = false
@@ -365,7 +365,6 @@ theme = SubResource( 11 )
 custom_styles/panel = SubResource( 12 )
 icon_enabled = true
 texture = ExtResource( 3 )
-text = "usermail"
 secret = true
 input_name = "Password"
 
@@ -378,6 +377,7 @@ margin_bottom = 248.0
 margin_right = 131.0
 theme = SubResource( 14 )
 text = "Remember Me"
+pressed = false
 
 [node name="ForgotPassword" parent="Container/SignIn/HBoxContainer" instance=ExtResource( 5 )]
 margin_left = 135.0
@@ -522,6 +522,7 @@ margin_bottom = 264.0
 margin_right = 131.0
 theme = SubResource( 22 )
 text = "Remember Me"
+pressed = false
 
 [node name="HSeparator" type="HSeparator" parent="Container/SignUp"]
 margin_top = 274.0
