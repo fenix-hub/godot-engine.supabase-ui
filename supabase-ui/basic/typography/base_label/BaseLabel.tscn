@@ -1,21 +1,127 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://supabase-ui/basic/typography/base_label/label.gd" type="Script" id=1]
 [ext_resource path="res://supabase-ui/res/fonts/roboto/Roboto-Regular.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
 resource_local_to_scene = true
-size = 15
 font_data = ExtResource( 2 )
+
+[sub_resource type="GDScript" id=2]
+script/source = "tool
+extends Label
+class_name SLabel
+
+export (int, \"Light Mode\", \"Dark Mode\") var mode : int = 0 setget set_mode
+var custom_color : Color = Color(\"#1F1F1F\") setget set_custom_color
+var custom_dark_color : Color = Color.white setget set_custom_dark_color
+
+var colors : Dictionary = {
+    \"text\" : [Color(\"#1F1F1F\"), Color.white],
+   }
+
+var level : int = 5         setget set_level
+var font_size : int = 15    setget set_font_size       
+
+var property_list : Array = [
+    {
+        \"class_name\": \"SLabel\",
+        \"hint\": PROPERTY_HINT_NONE,
+        \"usage\": PROPERTY_USAGE_CATEGORY,
+        \"name\": \"SLabel\",
+        \"type\": TYPE_STRING
+    },
+    {
+        \"usage\": PROPERTY_USAGE_GROUP,
+        \"name\": \"Style\",
+        \"type\": TYPE_STRING
+    },
+    {
+        \"usage\": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        \"name\": \"custom_color\",
+        \"type\": TYPE_COLOR
+    },
+    {
+        \"usage\": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        \"name\": \"custom_dark_color\",
+        \"type\": TYPE_COLOR
+    },
+    {
+        \"usage\": PROPERTY_USAGE_GROUP,
+        \"name\": \"Contents\",
+        \"type\": TYPE_STRING
+    },
+    {
+        \"usage\": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        \"name\": \"level\",
+        \"hint\": PROPERTY_HINT_ENUM,
+        \"hint_string\" : \"1,2,3,4,5\",
+        \"type\": TYPE_INT
+    },
+    {
+        \"usage\": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        \"name\": \"font_size\",
+        \"type\": TYPE_INT
+    }  
+]
+
+
+func _get_property_list():
+    return property_list
+
+func _init():
+    set_level(4)
+    set_text(\"\")
+
+func _load_defaults():
+    pass
+
+func _ready():
+    _load_defaults()
+    set_mode(mode)
+    add_to_group(\"supabase_components\")
+
+func set_text_color(_color : Color) -> void:
+    set(\"custom_colors/font_color\", _color)
+
+
+func set_mode(_mode : int) -> void:
+    mode = _mode
+    set_text_color(colors.text[mode])
+
+func set_font_size(_size : int) -> void:
+    font_size = _size
+    get(\"custom_fonts/font\").set(\"size\", _size)
+
+func set_custom_color(_color : Color) -> void:
+    custom_color = _color
+    colors.text[0] = custom_color
+    set_text_color(colors.text[mode])
+
+func set_custom_dark_color(_color : Color) -> void:
+    custom_dark_color = _color
+    colors.text[1] = custom_dark_color
+    set_text_color(colors.text[mode])
+
+func set_level(_level : int) -> void:
+    level = _level
+    match level:
+        0: set_font_size(40)
+        1: set_font_size(35)
+        2: set_font_size(25)
+        3: set_font_size(19)
+        4: set_font_size(16)
+"
 
 [node name="Label" type="Label"]
 margin_right = 40.0
 margin_bottom = 14.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
-script = ExtResource( 1 )
+script = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-level = 5
-font_size = 15
+custom_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+custom_dark_color = Color( 1, 1, 1, 1 )
+level = 4
+font_size = 16

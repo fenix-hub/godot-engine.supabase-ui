@@ -3,6 +3,8 @@ extends Label
 class_name SLabel
 
 export (int, "Light Mode", "Dark Mode") var mode : int = 0 setget set_mode
+var custom_color : Color = Color("#1F1F1F") setget set_custom_color
+var custom_dark_color : Color = Color.white setget set_custom_dark_color
 
 var colors : Dictionary = {
     "text" : [Color("#1F1F1F"), Color.white],
@@ -18,6 +20,21 @@ var property_list : Array = [
         "usage": PROPERTY_USAGE_CATEGORY,
         "name": "SLabel",
         "type": TYPE_STRING
+    },
+    {
+        "usage": PROPERTY_USAGE_GROUP,
+        "name": "Style",
+        "type": TYPE_STRING
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "custom_color",
+        "type": TYPE_COLOR
+    },
+    {
+        "usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE,
+        "name": "custom_dark_color",
+        "type": TYPE_COLOR
     },
     {
         "usage": PROPERTY_USAGE_GROUP,
@@ -65,6 +82,16 @@ func set_mode(_mode : int) -> void:
 func set_font_size(_size : int) -> void:
     font_size = _size
     get("custom_fonts/font").set("size", _size)
+
+func set_custom_color(_color : Color) -> void:
+    custom_color = _color
+    colors.text[0] = custom_color
+    set_text_color(colors.text[mode])
+
+func set_custom_dark_color(_color : Color) -> void:
+    custom_dark_color = _color
+    colors.text[1] = custom_dark_color
+    set_text_color(colors.text[mode])
 
 func set_level(_level : int) -> void:
     level = _level
